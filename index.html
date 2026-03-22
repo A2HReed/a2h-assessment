@@ -919,41 +919,14 @@
     This isn't a personality quiz. It's a diagnostic tool built on a decade of research, real-world leadership, and lived experience. Rate yourself honestly across all 10 Elements and discover exactly where to focus your energy to build the career and life you deserve.
   </p>
 
-  <!-- EMAIL GATE -->
-  <div id="email-gate" style="width:100%;max-width:460px;position:relative;z-index:1;">
-
-    <div id="gate-form-wrap">
-      <p style="font-size:11px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--gold);text-align:center;margin-bottom:1.25rem;">Get Your Free Results — Enter Your Info Below</p>
-      <div style="display:flex;flex-direction:column;gap:10px;">
-        <input type="text" id="gate-name" placeholder="First Name" autocomplete="given-name"
-          style="padding:14px 18px;border:1px solid rgba(255,255,255,0.15);background:rgba(255,255,255,0.07);color:#fff;font-family:'DM Sans',sans-serif;font-size:14px;border-radius:2px;outline:none;width:100%;"
-          onfocus="this.style.borderColor='rgba(201,147,58,0.7)'"
-          onblur="this.style.borderColor='rgba(255,255,255,0.15)'" />
-        <input type="email" id="gate-email" placeholder="Email Address" autocomplete="email"
-          style="padding:14px 18px;border:1px solid rgba(255,255,255,0.15);background:rgba(255,255,255,0.07);color:#fff;font-family:'DM Sans',sans-serif;font-size:14px;border-radius:2px;outline:none;width:100%;"
-          onfocus="this.style.borderColor='rgba(201,147,58,0.7)'"
-          onblur="this.style.borderColor='rgba(255,255,255,0.15)'"
-          onkeydown="if(event.key==='Enter') submitGate()" />
-        <button class="btn-start" onclick="submitGate()" style="width:100%;margin-top:4px;">
-          Begin My Assessment →
-        </button>
-      </div>
-      <div id="gate-error" style="display:none;margin-top:10px;font-size:12px;color:#F4A4B0;text-align:center;font-weight:500;"></div>
-      <p style="margin-top:16px;font-size:11px;color:rgba(255,255,255,0.28);text-align:center;line-height:1.65;">
-        Your info is safe with us. No spam — ever.<br>By submitting you'll receive your results and occasional A2H resources.
-      </p>
-    </div>
-
-    <!-- Success state (shown briefly before assessment loads) -->
-    <div id="gate-success" style="display:none;text-align:center;padding:2rem 0;">
-      <div style="font-family:'Playfair Display',serif;font-size:2.5rem;color:var(--gold);margin-bottom:1rem;">✦</div>
-      <p style="font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:700;color:#fff;margin-bottom:0.5rem;">Welcome to the Movement.</p>
-      <p style="font-size:13px;color:rgba(255,255,255,0.6);margin-bottom:1.75rem;">Loading your assessment...</p>
-      <div id="loading-bar" style="height:2px;background:rgba(255,255,255,0.15);border-radius:2px;overflow:hidden;width:200px;margin:0 auto;">
-        <div id="loading-fill" style="height:100%;width:0%;background:var(--gold);transition:width 1.1s ease;"></div>
-      </div>
-    </div>
-
+  <!-- SIMPLE START BUTTON -->
+  <div style="width:100%;max-width:460px;position:relative;z-index:1;text-align:center;">
+    <button class="btn-start" onclick="startAssessment()" style="width:100%;">
+      Begin My Free Assessment →
+    </button>
+    <p style="margin-top:16px;font-size:11px;color:rgba(255,255,255,0.28);text-align:center;line-height:1.65;">
+      Free · Takes about 5 minutes · No signup required to start
+    </p>
   </div>
 
   <p class="cover-tagline">"Infiltrate Society with The Elements A2H" — Stephanie Reed</p>
@@ -1343,8 +1316,8 @@
       <h3 class="cta-headline">Now you know your score.<br>Let's activate your Elements.</h3>
       <p class="cta-body" id="cta-body-text">The assessment revealed your gaps. The next step is building the framework into how you actually live and lead — with tools, community, and guidance built specifically for high-performers navigating systems that weren't designed for their success.</p>
       <div class="cta-buttons">
-        <a href="https://aspire2higher.com" class="btn-cta-primary">Explore Aspire2Higher →</a>
-        <a href="https://aspire2higher.com" class="btn-cta-secondary">Join The Movement</a>
+        <a href="http://eepurl.com/hnj8sn" class="btn-cta-primary" target="_blank">Join the A2H Movement →</a>
+        <a href="http://eepurl.com/hnj8sn" class="btn-cta-secondary" target="_blank">Get Free A2H Resources</a>
       </div>
       <p class="cta-footnote">aspire2higher.com · "Infiltrate Society with The Elements A2H"</p>
     </div>
@@ -1409,57 +1382,29 @@
     console.log('A2H Lead Captured:', { name, email, timestamp: new Date().toISOString() });
 
     // ═══════════════════════════════════════════════════════════════════════
-    // MAILCHIMP INTEGRATION — DARRELL: ONE CHANGE ONLY
-    // ───────────────────────────────────────────────────────────────────────
-    // 1. Go to Mailchimp → Audience → Signup Forms → Embedded Forms
-    // 2. Find the line: <form action="https://...list-manage.com/subscribe/post?u=...&amp;id=...">
-    // 3. Copy that URL, change &amp; to just & and paste it below
-    // ───────────────────────────────────────────────────────────────────────
-    const FORMSPREE_ID = 'xvzwnwkr';
+    // LEAD CAPTURE — Formspree (works with GitHub Pages, no server needed)
+    // SETUP: Replace YOUR_FORMSPREE_ID below with your actual Formspree form ID
+    // Get your free ID at formspree.io — takes 2 minutes, no credit card
+    // Your form ID looks like: xpwzgkrb (8 random characters)
     // ═══════════════════════════════════════════════════════════════════════
+    const FORMSPREE_ID = 'xvzwnwkr';
 
-    if (FORMSPREE_ID !== 'PASTE_YOUR_FORMSPREE_ID_HERE') {
-      // Build a hidden Mailchimp-compatible form and submit it
-      // This is the standard Mailchimp embedded form method — safe, no API key needed
-      const mcForm = document.createElement('form');
-      mcForm.action  = FORMSPREE_ID;
-      mcForm.method  = 'POST';
-      mcForm.target  = 'mc-hidden-iframe'; // submit into hidden iframe — no page redirect
-      mcForm.style.display = 'none';
-
-      // Helper to add a hidden field
-      const addField = (n, v) => {
-        const f = document.createElement('input');
-        f.type = 'hidden'; f.name = n; f.value = v;
-        mcForm.appendChild(f);
-      };
-
-      addField('EMAIL', email);           // subscriber email
-      addField('FNAME', name);            // first name — maps to FNAME merge tag
-      addField('tags', 'A2H Assessment'); // tags this subscriber so you can segment later
-      addField('SOURCE', '10-elements-assessment'); // custom field — know where they came from
-      // Mailchimp bot-prevention field — required, must be blank
-      addField('b_placeholder_antispam', '');
-
-      // Hidden iframe so the Mailchimp response page doesn't redirect the user
-      let iframe = document.getElementById('mc-hidden-iframe');
-      if (!iframe) {
-        iframe = document.createElement('iframe');
-        iframe.name = 'mc-hidden-iframe';
-        iframe.id   = 'mc-hidden-iframe';
-        iframe.style.display = 'none';
-        document.body.appendChild(iframe);
-      }
-
-      document.body.appendChild(mcForm);
-      mcForm.submit();
-      document.body.removeChild(mcForm);
-
-      console.log('Mailchimp: subscriber submitted →', email);
-    } else {
-      // URL not yet set — log a reminder during testing
-      console.warn('Mailchimp URL not configured yet. Set FORMSPREE_ID to activate email capture.');
-    }
+    fetch(`https://formspree.io/f/${FORMSPREE_ID}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        first_name: name,
+        email:      email,
+        source:     '10-elements-assessment',
+        tag:        'A2H Assessment'
+      })
+    })
+    .then(res => {
+      if (res.ok) console.log('Lead captured via Formspree:', email);
+      else console.warn('Formspree responded with error:', res.status);
+    })
+    .catch(err => console.warn('Formspree error (non-critical):', err));
+    // ═══════════════════════════════════════════════════════════════════════
 
     // Launch assessment after brief success animation
     setTimeout(() => startAssessment(), 1400);
