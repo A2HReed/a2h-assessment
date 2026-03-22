@@ -1409,33 +1409,57 @@
     console.log('A2H Lead Captured:', { name, email, timestamp: new Date().toISOString() });
 
     // ═══════════════════════════════════════════════════════════════════════
-    // LEAD CAPTURE — Formspree (works with GitHub Pages, no server needed)
-    // SETUP: Replace xvzwnwkr below with your actual Formspree form ID
-    // Get your free ID at formspree.io — takes 2 minutes, no credit card
-    // Your form ID looks like: xpwzgkrb (8 random characters)
+    // MAILCHIMP INTEGRATION — DARRELL: ONE CHANGE ONLY
+    // ───────────────────────────────────────────────────────────────────────
+    // 1. Go to Mailchimp → Audience → Signup Forms → Embedded Forms
+    // 2. Find the line: <form action="https://...list-manage.com/subscribe/post?u=...&amp;id=...">
+    // 3. Copy that URL, change &amp; to just & and paste it below
+    // ───────────────────────────────────────────────────────────────────────
+    const MAILCHIMP_URL = '5caa93c1a1ef035a84d856b16a00d0f7-us7';
     // ═══════════════════════════════════════════════════════════════════════
-    const FORMSPREE_ID = 'xvzwnwkr';
 
-    if (FORMSPREE_ID !== 'xvzwnwkr') {
-      fetch(`https://formspree.io/f/${FORMSPREE_ID}`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          first_name: name,
-          email:      email,
-          source:     '10-elements-assessment',
-          tag:        'A2H Assessment'
-        })
-      })
-      .then(res => {
-        if (res.ok) console.log('Lead captured via Formspree:', email);
-        else console.warn('Formspree responded with error:', res.status);
-      })
-      .catch(err => console.warn('Formspree error (non-critical):', err));
+    if (MAILCHIMP_URL !== 'PASTE_YOUR_MAILCHIMP_URL_HERE') {
+      // Build a hidden Mailchimp-compatible form and submit it
+      // This is the standard Mailchimp embedded form method — safe, no API key needed
+      const mcForm = document.createElement('form');
+      mcForm.action  = MAILCHIMP_URL;
+      mcForm.method  = 'POST';
+      mcForm.target  = 'mc-hidden-iframe'; // submit into hidden iframe — no page redirect
+      mcForm.style.display = 'none';
+
+      // Helper to add a hidden field
+      const addField = (n, v) => {
+        const f = document.createElement('input');
+        f.type = 'hidden'; f.name = n; f.value = v;
+        mcForm.appendChild(f);
+      };
+
+      addField('EMAIL', email);           // subscriber email
+      addField('FNAME', name);            // first name — maps to FNAME merge tag
+      addField('tags', 'A2H Assessment'); // tags this subscriber so you can segment later
+      addField('SOURCE', '10-elements-assessment'); // custom field — know where they came from
+      // Mailchimp bot-prevention field — required, must be blank
+      addField('b_placeholder_antispam', '');
+
+      // Hidden iframe so the Mailchimp response page doesn't redirect the user
+      let iframe = document.getElementById('mc-hidden-iframe');
+      if (!iframe) {
+        iframe = document.createElement('iframe');
+        iframe.name = 'mc-hidden-iframe';
+        iframe.id   = 'mc-hidden-iframe';
+        iframe.style.display = 'none';
+        document.body.appendChild(iframe);
+      }
+
+      document.body.appendChild(mcForm);
+      mcForm.submit();
+      document.body.removeChild(mcForm);
+
+      console.log('Mailchimp: subscriber submitted →', email);
     } else {
-      console.warn('Formspree ID not set yet — add your ID to activate email capture.');
+      // URL not yet set — log a reminder during testing
+      console.warn('Mailchimp URL not configured yet. Set MAILCHIMP_URL to activate email capture.');
     }
-    // ═══════════════════════════════════════════════════════════════════════
 
     // Launch assessment after brief success animation
     setTimeout(() => startAssessment(), 1400);
