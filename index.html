@@ -1410,31 +1410,27 @@
 
     // ═══════════════════════════════════════════════════════════════════════
     // LEAD CAPTURE — Formspree (works with GitHub Pages, no server needed)
-    // SETUP: Replace xvzwnwkr below with your actual Formspree form ID
+    // SETUP: Replace YOUR_FORMSPREE_ID below with your actual Formspree form ID
     // Get your free ID at formspree.io — takes 2 minutes, no credit card
     // Your form ID looks like: xpwzgkrb (8 random characters)
     // ═══════════════════════════════════════════════════════════════════════
     const FORMSPREE_ID = 'xvzwnwkr';
 
-    if (FORMSPREE_ID !== 'xvzwnwkr') {
-      fetch(`https://formspree.io/f/${FORMSPREE_ID}`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          first_name: name,
-          email:      email,
-          source:     '10-elements-assessment',
-          tag:        'A2H Assessment'
-        })
+    fetch(`https://formspree.io/f/${FORMSPREE_ID}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        first_name: name,
+        email:      email,
+        source:     '10-elements-assessment',
+        tag:        'A2H Assessment'
       })
-      .then(res => {
-        if (res.ok) console.log('Lead captured via Formspree:', email);
-        else console.warn('Formspree responded with error:', res.status);
-      })
-      .catch(err => console.warn('Formspree error (non-critical):', err));
-    } else {
-      console.warn('Formspree ID not set yet — add your ID to activate email capture.');
-    }
+    })
+    .then(res => {
+      if (res.ok) console.log('Lead captured via Formspree:', email);
+      else console.warn('Formspree responded with error:', res.status);
+    })
+    .catch(err => console.warn('Formspree error (non-critical):', err));
     // ═══════════════════════════════════════════════════════════════════════
 
     // Launch assessment after brief success animation
