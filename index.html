@@ -1415,14 +1415,14 @@
     // 2. Find the line: <form action="https://...list-manage.com/subscribe/post?u=...&amp;id=...">
     // 3. Copy that URL, change &amp; to just & and paste it below
     // ───────────────────────────────────────────────────────────────────────
-    const MAILCHIMP_URL = '5caa93c1a1ef035a84d856b16a00d0f7-us7';
+    const FORMSPREE_ID = 'xvzwnwkr';
     // ═══════════════════════════════════════════════════════════════════════
 
-    if (MAILCHIMP_URL !== 'PASTE_YOUR_MAILCHIMP_URL_HERE') {
+    if (FORMSPREE_ID !== 'PASTE_YOUR_FORMSPREE_ID_HERE') {
       // Build a hidden Mailchimp-compatible form and submit it
       // This is the standard Mailchimp embedded form method — safe, no API key needed
       const mcForm = document.createElement('form');
-      mcForm.action  = MAILCHIMP_URL;
+      mcForm.action  = FORMSPREE_ID;
       mcForm.method  = 'POST';
       mcForm.target  = 'mc-hidden-iframe'; // submit into hidden iframe — no page redirect
       mcForm.style.display = 'none';
@@ -1458,7 +1458,7 @@
       console.log('Mailchimp: subscriber submitted →', email);
     } else {
       // URL not yet set — log a reminder during testing
-      console.warn('Mailchimp URL not configured yet. Set MAILCHIMP_URL to activate email capture.');
+      console.warn('Mailchimp URL not configured yet. Set FORMSPREE_ID to activate email capture.');
     }
 
     // Launch assessment after brief success animation
