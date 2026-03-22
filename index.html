@@ -885,6 +885,102 @@
     line-height: 1.5;
   }
 
+
+  /* ── PRINT / PDF STYLES ── */
+  .save-results-wrap {
+    text-align: center;
+    margin: 2rem 0;
+    position: relative;
+    z-index: 1;
+  }
+  .btn-save-pdf {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: transparent;
+    border: 2px solid var(--gold);
+    color: var(--gold);
+    padding: 13px 28px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    border-radius: 2px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .btn-save-pdf:hover {
+    background: var(--gold);
+    color: var(--ink);
+  }
+  .save-note {
+    margin-top: 8px;
+    font-size: 11px;
+    color: rgba(255,255,255,0.35);
+  }
+
+  @media print {
+    /* Hide everything except results */
+    #cover, #assessment, .save-results-wrap,
+    .results-cta, .scoring-guide { display: none !important; }
+
+    /* Show results cleanly */
+    #results { display: block !important; }
+    .results-wrap { padding: 0 !important; }
+
+    /* Clean print header */
+    .results-hero {
+      background: #5A1429 !important;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+      padding: 2rem !important;
+    }
+
+    /* Pillar score cards */
+    .pillar-scores {
+      display: grid !important;
+      grid-template-columns: repeat(3,1fr) !important;
+      break-inside: avoid;
+    }
+    .pillar-score-card {
+      border: 1px solid #ddd !important;
+      break-inside: avoid;
+    }
+
+    /* Element breakdown */
+    .breakdown-section { break-inside: avoid; }
+    .element-result-row { break-inside: avoid; }
+
+    /* Insights */
+    .insights-section {
+      border-left: 4px solid #C9933A !important;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+      break-inside: avoid;
+    }
+
+    /* Print footer branding */
+    .print-footer {
+      display: block !important;
+      text-align: center;
+      padding: 1rem 0;
+      border-top: 1px solid #ddd;
+      margin-top: 2rem;
+      font-size: 11px;
+      color: #8A7D75;
+    }
+
+    /* Page setup */
+    @page {
+      margin: 1.5cm;
+      size: letter portrait;
+    }
+  }
+
+  /* Hidden on screen, visible only when printing */
+  .print-footer { display: none; }
+
   /* Animations */
   @keyframes fadeUp {
     from { opacity: 0; transform: translateY(16px); }
@@ -1310,7 +1406,15 @@
       <div id="insights-content"></div>
     </div>
 
-    <!-- CTA -->
+    <!-- SAVE MY RESULTS BUTTON -->
+    <div class="save-results-wrap">
+      <button class="btn-save-pdf" onclick="saveResultsPDF()">
+        ⬇ Save My Results
+      </button>
+      <p class="save-note">Saves as a PDF to your device · Free · No email required</p>
+    </div>
+
+        <!-- CTA -->
     <div class="results-cta">
       <div class="cta-eyebrow">Your Next Step with Aspire2Higher</div>
       <h3 class="cta-headline">Now you know your score.<br>Let's activate your Elements.</h3>
@@ -1320,6 +1424,14 @@
         <a href="http://eepurl.com/hnj8sn" class="btn-cta-secondary" target="_blank">Get Free A2H Resources</a>
       </div>
       <p class="cta-footnote">aspire2higher.com · "Infiltrate Society with The Elements A2H"</p>
+    </div>
+
+    <!-- PRINT ONLY FOOTER -->
+    <div class="print-footer">
+      <strong>Aspire2Higher Personal &amp; Professional Development, Inc.</strong><br>
+      aspire2higher.com · sdreed@aspire2higher.com<br>
+      &copy; 2025 Aspire2Higher. All rights reserved.<br>
+      "Infiltrate Society with The Elements A2H" — Stephanie Reed
     </div>
 
   </div><!-- /results-wrap -->
@@ -1580,6 +1692,21 @@
       document.getElementById('cta-body-text').textContent = "You're already embodying the Elements at a high level. The next chapter is about scale, legacy, and bringing others into The Movement. The A2H community and keynote workshops are your next level.";
     }
   }
+  // ── SAVE AS PDF ──────────────────────────────────────
+  function saveResultsPDF() {
+    // Set the document title so the PDF filename is meaningful
+    const originalTitle = document.title;
+    const name = window.userName || 'My';
+    document.title = name + ' A2H 10 Elements Results — Aspire2Higher';
+
+    // Trigger browser print dialog (user selects Save as PDF)
+    window.print();
+
+    // Restore original title after print dialog closes
+    setTimeout(() => { document.title = originalTitle; }, 1000);
+  }
+
+
 </script>
 </body>
 </html>
